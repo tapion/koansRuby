@@ -69,7 +69,11 @@ def score(dice)
       end
     end
   }
-  #[1,2,3,4,5,5,5,5].uniq.each{|num| prueba = [5,5,5].count(num)}
+  otherNumbers.uniq.each{|num| 
+    timesNumber = otherNumbers.count(num)
+    if(timesNumber % 3 == 0)
+
+  }
 end
 
 class AboutScoringProject < Neo::Koan
