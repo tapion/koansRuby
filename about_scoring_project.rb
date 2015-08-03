@@ -33,7 +33,8 @@ def score(dice)
   ini = 0
   countThreeOnes = 0
   countOnes = 0
-  otherNumbers = dice.select {|num| num != 1}.uniq
+  score = 0
+=begin  otherNumbers = dice.select {|num| num != 1}.uniq
   pintsOtherNumbers = 0
   otherNumbers.each{|number|
     times = otherNumbers.count(number)
@@ -42,22 +43,33 @@ def score(dice)
     end
   }
 
+=end
+  otherNumbers = Array.new
+  ones = Array.new
   dice.each_with_index{|dice,index|
-    if(dice == 1 )
-      countOnes ++
-      #if(index == ini)
-      if (countThreeOnes == 0)
-        countThreeOnes++
-        ini = index + 1
-      elsif(index == ini && countThreeOnes > 0)
-        countThreeOnes++
-        ini = index + 1
+    if(index == 0)
+      if(dice == 1)
+        countThreeOnes ++
+        ones << dice
+      else
+        otherNumbers << dice
+      end
+    else
+      if(dice == 1)
+        countThreeOnes ++
+        ones << dice
       else
         countThreeOnes = 0
+        otherNumbers << dice
+      end
+      if(countThreeOnes == 3)
+        score += 1000
+        countThreeOnes = 0
+        ones = ones.drop(3)
       end
     end
   }
-  if()
+  #[1,2,3,4,5,5,5,5].uniq.each{|num| prueba = [5,5,5].count(num)}
 end
 
 class AboutScoringProject < Neo::Koan
