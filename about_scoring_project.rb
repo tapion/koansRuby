@@ -30,50 +30,45 @@ require File.expand_path(File.dirname(__FILE__) + '/neo')
 # Your goal is to write the score method.
 
 def score(dice)
-  ini = 0
   countThreeOnes = 0
   countOnes = 0
   score = 0
-=begin  otherNumbers = dice.select {|num| num != 1}.uniq
-  pintsOtherNumbers = 0
-  otherNumbers.each{|number|
-    times = otherNumbers.count(number)
-    if(times >= 3)
-      pointsOtherNumbers += times * number
-    end
-  }
-
-=end
   otherNumbers = Array.new
   ones = Array.new
   dice.each_with_index{|dice,index|
-    if(index == 0)
-      if(dice == 1)
-        countThreeOnes ++
-        ones << dice
-      else
-        otherNumbers << dice
-      end
+    if(dice == 1)
+      countThreeOnes += 1
+      ones << dice
     else
-      if(dice == 1)
-        countThreeOnes ++
-        ones << dice
-      else
-        countThreeOnes = 0
-        otherNumbers << dice
-      end
-      if(countThreeOnes == 3)
-        score += 1000
-        countThreeOnes = 0
-        ones = ones.drop(3)
-      end
+      countThreeOnes = 0
+      otherNumbers << dice
+    end
+    if(countThreeOnes == 3)
+      score += 1000
+      countThreeOnes = 0
+      ones = ones.drop(3)
     end
   }
-  otherNumbers.uniq.each{|num| 
+  arrayOtherNumbers = Array.new
+  otherNumbers.uniq.each{|num|
     timesNumber = otherNumbers.count(num)
-    if(timesNumber % 3 == 0)
-
+    modTres = timesNumber % 3
+    if(timesNumber >= 3)
+      if(modTres > 0)
+        score +=  num * 100
+        tmp = otherNumbers.select{|numero| numero == num}.first(modTres)
+        arrayOtherNumbers.concat(tmp)
+      else
+        score += 100 * num
+      end
+    else
+      tmp = otherNumbers.select{|numero| numero == num}
+      arrayOtherNumbers.concat(tmp)
+    end
   }
+  score += ones.count() * 100
+  #print arrayOtherNumbers
+  score += arrayOtherNumbers.select{|num| num == 5}.count() * 50
 end
 
 class AboutScoringProject < Neo::Koan
